@@ -40,7 +40,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
      */
     protected function createGithubDriver()
     {
-        $config = $this->config->get('services.github');
+        $config = $this->config->get('socialite.github');
 
         return $this->buildProvider(
             GithubProvider::class, $config
@@ -54,7 +54,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
      */
     protected function createGoogleDriver()
     {
-        $config = $this->config->get('services.google');
+        $config = $this->config->get('socialite.google');
 
         return $this->buildProvider(
             GoogleProvider::class, $config
@@ -68,7 +68,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
      */
     protected function createTelegramDriver()
     {
-        $config = $this->config->get('services.telegram');
+        $config = $this->config->get('socialite.telegram');
 
         return $this->buildProvider(
             TelegramProvider::class, $config
