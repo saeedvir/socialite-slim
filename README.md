@@ -152,9 +152,17 @@ $connectedUser = OAuth::findOrCreateOauthUser($provider, $providerId, $userData)
 
 See [OAUTH-README.md](OAUTH-README.md) for complete documentation.
 
+## Documentation
+
+For comprehensive documentation, please visit:
+
+- [Main Documentation](docs/index.md)
+- [API Reference](docs/api.md)
+- [OAuth Feature Documentation](OAUTH-README.md)
+
 ## Contributing
 
-Thank you for considering contributing to Socialite Slim! The contribution guide can be found in the [GitHub repository](https://github.com/saeedvir/socialite-slim).
+Thank you for considering contributing to Socialite Slim! The contribution guide can be found in the [GitHub repository](https://github.com/saeedvir/socialite-slim/blob/master/CONTRIBUTING.md).
 
 ## Security Vulnerabilities
 
