@@ -1,0 +1,42 @@
+# Dependencies
+/vendor/
+/composer.phar
+/composer.lock
+
+# Environment
+.env
+.env.backup
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+laravel.log
+logs/
+
+# Testing
+.phpunit.result.cache
+.php_cs.cache
+
+# Build
+/node_modules/
+/npm-debug.log*
+yarn-error.log*
+
+# Homestead
+Homestead.json
+Homestead.yaml
+
+# Vagrant
+.vagrant/
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS generated files
+Thumbs.db
