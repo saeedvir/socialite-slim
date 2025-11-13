@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configuration file for easy setup
 - Example controller and routes
 - Usage documentation
+- OAuth connected users feature with database migrations
+- GitHub Actions workflows for CI/CD
+- Contribution guidelines and templates
+- Code of conduct
 
 ### Changed
 - Updated package information with saeedvir as author
