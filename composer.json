@@ -1,0 +1,61 @@
+{
+    "name": "saeedvir/socialite-slim",
+    "description": "Lightweight Laravel wrapper around OAuth 1 & OAuth 2 libraries with Telegram support.",
+    "keywords": ["oauth", "laravel", "socialite", "telegram", "google", "github"],
+    "license": "MIT",
+    "homepage": "https://github.com/saeedvir/socialite-slim",
+    "support": {
+        "issues": "https://github.com/saeedvir/socialite-slim/issues",
+        "source": "https://github.com/saeedvir/socialite-slim"
+    },
+    "authors": [
+        {
+            "name": "saeedvir",
+            "email": "saeed.es91@gmail.com",
+            "homepage": "https://github.com/saeedvir"
+        }
+    ],
+    "require": {
+        "php": "^7.2|^8.0",
+        "ext-json": "*",
+        "firebase/php-jwt": "^6.0",
+        "guzzlehttp/guzzle": "^6.0|^7.0",
+        "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
+        "illuminate/http": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
+        "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0|^9.0|^10.0",
+        "phpunit/phpunit": "^8.0|^9.3|^10.4|^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Saeedvir\\SocialiteSlim\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Saeedvir\\SocialiteSlim\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Saeedvir\\SocialiteSlim\\SocialiteServiceProvider"
+            ],
+            "aliases": {
+                "Socialite": "Saeedvir\\Socialite\\Facades\\Socialite",
+                "OAuth": "Saeedvir\\SocialiteSlim\\Facades\\OAuth"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
