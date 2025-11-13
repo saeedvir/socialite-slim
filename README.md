@@ -11,6 +11,9 @@
 
 Laravel Socialite Slim provides a lightweight, expressive, fluent interface to OAuth authentication with Google, GitHub, and Telegram. It handles almost all of the boilerplate social authentication code you are dreading writing.
 
+- [Chat With AI for Socialite Slim](https://context7.com/saeedvir/socialite-slim?tab=chat)
+
+
 ## Supported Providers
 
 - Google
