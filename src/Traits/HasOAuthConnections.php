@@ -9,7 +9,7 @@ trait HasOAuthConnections
      */
     public function oauthConnections()
     {
-        return $this->hasMany(\saeedvir\SocialiteSlim\Models\OauthConnectedUser::class);
+        return $this->hasMany(\Saeedvir\SocialiteSlim\Models\OauthConnectedUser::class);
     }
 
     /**
@@ -27,7 +27,7 @@ trait HasOAuthConnections
      * Get OAuth connection for a specific provider.
      *
      * @param string $provider
-     * @return \saeedvir\SocialiteSlim\Models\OauthConnectedUser|null
+     * @return \Saeedvir\SocialiteSlim\Models\OauthConnectedUser|null
      */
     public function getOauthConnection($provider)
     {
@@ -37,8 +37,8 @@ trait HasOAuthConnections
     /**
      * Connect an OAuth account to this user.
      *
-     * @param \saeedvir\SocialiteSlim\Models\OauthConnectedUser $oauthUser
-     * @return \saeedvir\SocialiteSlim\Models\OauthConnectedUser
+     * @param \Saeedvir\SocialiteSlim\Models\OauthConnectedUser $oauthUser
+     * @return \Saeedvir\SocialiteSlim\Models\OauthConnectedUser
      */
     public function connectOauthAccount($oauthUser)
     {

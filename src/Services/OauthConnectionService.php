@@ -2,7 +2,7 @@
 
 namespace Saeedvir\SocialiteSlim\Services;
 
-use saeedvir\SocialiteSlim\Models\OauthConnectedUser;
+use Saeedvir\SocialiteSlim\Models\OauthConnectedUser;
 use Illuminate\Support\Facades\DB;
 
 class OauthConnectionService
