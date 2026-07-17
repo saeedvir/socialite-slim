@@ -9,10 +9,14 @@
 
 ## Introduction
 
-Laravel Socialite Slim provides a lightweight, expressive, fluent interface to OAuth authentication with Google, GitHub, and Telegram. It handles almost all of the boilerplate social authentication code you are dreading writing.
+Laravel Socialite Slim provides a lightweight, expressive, fluent interface to OAuth authentication with Google, GitHub, and Telegram.
 
-- [Chat With AI for Socialite Slim](https://context7.com/saeedvir/socialite-slim?tab=chat)
+## What's New in v5.0
 
+- ✅ **Laravel 13 Compatibility** - Updated dependencies to support latest Laravel versions
+- 🔒 **Security Improvements** - Implemented timing-safe state comparison using `hash_equals()`
+- 🧪 **Enhanced Testing** - Added `FakeProvider` and `SocialiteFake` for easy testing
+- 📦 **Slim Distribution** - Removed non-essential files to keep package lightweight
 
 ## Supported Providers
 
@@ -22,7 +26,7 @@ Laravel Socialite Slim provides a lightweight, expressive, fluent interface to O
 
 ## OAuth Connected Users Feature
 
-This package now includes a complete OAuth connected users system that allows you to track and manage OAuth connections for your users. See [OAUTH-README.md](OAUTH-README.md) for detailed documentation.
+This package includes a complete OAuth connected users system that allows you to track and manage OAuth connections for your users. For detailed documentation, please refer to the documentation in the repository (docs/ folder).
 
 ## Installation
 
@@ -46,131 +50,115 @@ php artisan migrate
 
 ## Configuration
 
-After installing the Socialite Slim library, register the `Saeedvir\SocialiteSlim\SocialiteServiceProvider` in your `config/app.php` configuration file:
+After publishing the service provider, the package will automatically load its configuration from `config/socialite.php`. You can publish this configuration file with:
 
-```php
-'providers' => [
-    // Other service providers...
-
-    Saeedvir\SocialiteSlim\SocialiteServiceProvider::class,
-],
+```bash
+php artisan vendor:publish --provider="Saeedvir\SocialiteSlim\SocialiteServiceProvider" --tag="socialite-config"
 ```
 
-Also, add the `Socialite` facade to the `aliases` array in your `config/app.php` configuration file:
+Add your credentials to your `.env` file:
 
-```php
-'aliases' => [
-    // Other aliases...
+```dotenv
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+GITHUB_REDIRECT_URI=/auth/github/callback
 
-    'Socialite' => Saeedvir\SocialiteSlim\Facades\Socialite::class,
-    'OAuth' => Saeedvir\SocialiteSlim\Facades\OAuth::class,
-],
-```
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=/auth/google/callback
 
-You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `google`, `github`, or `telegram`, depending on the providers your application needs:
-
-```php
-'google' => [
-    'client_id' => env('GOOGLE_CLIENT_ID'),
-    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-    'redirect' => 'http://your-callback-url',
-],
-
-'github' => [
-    'client_id' => env('GITHUB_CLIENT_ID'),
-    'client_secret' => env('GITHUB_CLIENT_SECRET'),
-    'redirect' => 'http://your-callback-url',
-],
-
-'telegram' => [
-    'client_id' => env('TELEGRAM_CLIENT_ID'),
-    'client_secret' => env('TELEGRAM_CLIENT_SECRET'),
-    'redirect' => 'http://your-callback-url',
-],
+TELEGRAM_CLIENT_ID=your_telegram_bot_token
+TELEGRAM_CLIENT_SECRET=your_telegram_bot_token
+TELEGRAM_REDIRECT_URI=/auth/telegram/callback
 ```
 
 ## Basic Usage
 
 ```php
-<?php
+use Saeedvir\SocialiteSlim\Socialite;
 
-namespace App\Http\Controllers\Auth;
+// Redirect user to OAuth provider
+return Socialite::driver('google')->redirect();
 
-use Saeedvir\SocialiteSlim\Facades\Socialite;
+// Get user information from provider callback
+$user = Socialite::driver('google')->user();
 
-class AuthController extends Controller
-{
-    /**
-     * Redirect the user to the GitHub authentication page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function redirectToProvider()
-    {
-        return Socialite::driver('github')->redirect();
-    }
-
-    /**
-     * Obtain the user information from GitHub.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function handleProviderCallback()
-    {
-        $user = Socialite::driver('github')->user();
-
-        // $user->token
-    }
-}
+// Get specific user data
+$user->getId();
+$user->getNickname();
+$user->getName();
+$user->getEmail();
+$user->getAvatar();
 ```
 
 ## OAuth Connected Users Usage
-
-To use the OAuth connected users feature, add the trait to your User model:
-
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Saeedvir\SocialiteSlim\Traits\HasOAuthConnections;
-
-class User extends Authenticatable
-{
-    use HasOAuthConnections;
-    
-    // ... rest of your model
-}
-```
-
-Then you can use the OAuth facade to manage connections:
 
 ```php
 use Saeedvir\SocialiteSlim\Facades\OAuth;
 
 // Find or create an OAuth connected user
-$connectedUser = OAuth::findOrCreateOauthUser($provider, $providerId, $userData);
+$oauthUser = OAuth::findOrCreateOauthUser(
+    'google',
+    $user->getId(),
+    [
+        'access_token' => $user->token,
+        'refresh_token' => $user->refreshToken,
+        'expires_in' => $user->expiresIn,
+        'name' => $user->name,
+        'email' => $user->email,
+        'avatar' => $user->avatar
+    ]
+);
+
+// Check if user has OAuth connection
+$hasConnection = OAuth::userHasOauthConnection($userModel, 'google');
+
+// Get OAuth user by provider and ID
+$storedOauthUser = OAuth::getOauthUser('google', $googleUserId);
 ```
 
-See [OAUTH-README.md](OAUTH-README.md) for complete documentation.
+## Advanced Features
 
-## Documentation
+### Scopes and Parameters
 
-For comprehensive documentation, please visit:
+```php
+// Add additional scopes
+Socialite::driver('google')
+    ->scopes(['openid', 'profile', 'email', 'https://www.googleapis.com/auth/calendar'])
+    ->redirect();
 
-- [Main Documentation](docs/index.md)
-- [API Reference](docs/api.md)
-- [OAuth Feature Documentation](OAUTH-README.md)
+// Add custom parameters
+Socialite::driver('google')
+    ->with(['hd' => 'example.com']) // Google Apps domain restriction
+    ->redirect();
+```
 
-## Contributing
+### Testing
 
-Thank you for considering contributing to Socialite Slim! The contribution guide can be found in the [GitHub repository](https://github.com/saeedvir/socialite-slim/blob/master/CONTRIBUTING.md).
+The package includes testing utilities for easy mocking:
 
-## Security Vulnerabilities
+```php
+use Saeedvir\SocialiteSlim\Socialite;
+use Saeedvir\SocialiteSlim\Testing\SocialiteFake;
 
-Please review [our security policy](https://github.com/saeedvir/socialite-slim/security/policy) on how to report security vulnerabilities.
+// In your tests:
+Socialite::fake();
+
+// Define a fake user for GitHub
+Socialite::fake('github', (object) [
+    'id' => '12345',
+    'nickname' => 'githubuser',
+    'name' => 'GitHub User',
+    'email' => 'user@example.com',
+]);
+
+// Now Socialite::driver('github')->user() will return the fake user above
+```
+
+## Security
+
+If you discover any security-related issues, please email security@saeedvir.com instead of using the issue tracker.
 
 ## License
 
-Laravel Socialite Slim is open-sourced software licensed under the [MIT license](LICENSE.md).
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
